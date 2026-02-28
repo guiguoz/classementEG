@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon UUID</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #0f0f23;
+            color: #4ecca3;
+        }
+        .box {
+            background: #16213e;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .uuid {
+            font-size: 18px;
+            word-break: break-all;
+            background: #000;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        button {
+            background: #4ecca3;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Ton UUID</h1>
+    
+    <div class="box">
+        <h2>UUID trouvé :</h2>
+        <div class="uuid" id="uuid">Chargement...</div>
+        
+        <h2>Nom d'équipe :</h2>
+        <div class="uuid" id="team-name">Chargement...</div>
+        
+        <h2>Score actuel :</h2>
+        <div class="uuid" id="score">Chargement...</div>
+    </div>
+    
+    <button onclick="location.href='F1-final.html'">
+        Retour F1-final.html
+    </button>
+    
+    <script>
+        const STORAGE_KEY = 'vikazimut_team_uuid_archi';
+        const API_BASE = 'https://hebergementvikazimut.vikazim.fr/escapegame/api';
+        
+        const uuid = localStorage.getItem(STORAGE_KEY);
+        
+        document.getElementById('uuid').textContent = uuid || '❌ Aucun UUID trouvé';
+        
+        if (uuid) {
+            // Récupérer infos équipe
+            fetch(`${API_BASE}/check-team.php?uuid=${uuid}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.found) {
+                        document.getElementById('team-name').textContent = data.team.name;
+                        document.getElementById('score').textContent = data.team.total_score + ' points';
+                    } else {
+                        document.getElementById('team-name').textContent = '❌ Équipe introuvable en base';
+                        document.getElementById('score').textContent = '❌ Pas de score';
+                    }
+                })
+                .catch(err => {
+                    document.getElementById('team-name').textContent = '❌ Erreur API';
+                    document.getElementById('score').textContent = err.message;
+                });
+        }
+    </script>
+</body>
+</html>
