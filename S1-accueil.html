@@ -403,6 +403,9 @@
       const GAME_ID = 'archi';
       const STORAGE_KEY_UUID = `vikazimut_team_uuid_${GAME_ID}`;
 
+      // Liste exhaustive des épreuves du jeu — à mettre à jour si le parcours change
+      const ALL_CHALLENGES = ['T1', 'T2', 'T3', 'T4'];
+
       const teamNameInput = document.getElementById('team-name');
       const btnStart = document.getElementById('btn-start');
       const btnLeaderboard = document.getElementById('btn-leaderboard');
@@ -491,16 +494,23 @@
         if (!uuid) return;
 
         try {
-          const team = await apiCall(`team.php?action=check&uuid=${encodeURIComponent(uuid)}`);
-          console.log('Équipe trouvée:', team);
+          // On utilise "session" (retourne challenges_completed) plutôt que "check"
+          // (qui retourne is_finished, positionné dès la visite de F1 même partiellement)
+          const session = await apiCall(`team.php?action=session&uuid=${encodeURIComponent(uuid)}`);
+          console.log('Session trouvée:', session);
 
-          // Si l'équipe a terminé le jeu, on repart de zéro
-          if (team.is_finished) {
+          // Repartir de zéro UNIQUEMENT si TOUTES les épreuves sont complétées
+          const allCompleted = ALL_CHALLENGES.every(
+            c => (session.challenges_completed || []).includes(c)
+          );
+
+          if (allCompleted) {
+            console.log('Toutes les épreuves complétées — réinitialisation.');
             clearTeamUUID();
             return;
           }
 
-          teamNameInput.value = team.name;
+          teamNameInput.value = session.name;
           teamNameInput.disabled = true;
           btnStart.style.display = 'none';
           document.getElementById('btn-resume').style.display = 'block';
