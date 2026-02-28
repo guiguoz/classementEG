@@ -14,3 +14,8 @@ function getDB(): PDO {
 
     return $pdo;
 }
+
+// Alias pour compatibilité
+function getDbConnection(): PDO {
+    return getDB();
+}
