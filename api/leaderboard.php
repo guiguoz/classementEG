@@ -13,6 +13,7 @@ $limit = max(1, min(100, $limit));
 try {
     $pdo = getDbConnection();
     
+    // FIX : GROUP BY complet avec tous les champs sélectionnés
     $sql = "
     SELECT 
         t.uuid,
@@ -22,10 +23,10 @@ try {
     FROM teams t
     LEFT JOIN challenge_scores cs ON t.id = cs.team_id
     WHERE t.game_id = :game_id
-    GROUP BY t.uuid
+    GROUP BY t.id, t.uuid, t.name, t.total_score
     ORDER BY t.total_score DESC
     LIMIT :limit
-";
+    ";
     
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':game_id', $game_id, PDO::PARAM_STR);
