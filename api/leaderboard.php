@@ -14,18 +14,18 @@ try {
     $pdo = getDbConnection();
     
     $sql = "
-        SELECT 
-            t.uuid,
-            t.name,
-            t.total_score,
-            COUNT(cs.challenge_id) as challenges_completed
-        FROM teams t
-        LEFT JOIN challenge_scores cs ON t.uuid = cs.team_uuid
-        WHERE t.game_id = :game_id
-        GROUP BY t.uuid
-        ORDER BY t.total_score DESC
-        LIMIT :limit
-    ";
+    SELECT 
+        t.uuid,
+        t.name,
+        t.total_score,
+        COUNT(cs.challenge_id) as challenges_completed
+    FROM teams t
+    LEFT JOIN challenge_scores cs ON t.id = cs.team_id
+    WHERE t.game_id = :game_id
+    GROUP BY t.uuid
+    ORDER BY t.total_score DESC
+    LIMIT :limit
+";
     
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':game_id', $game_id, PDO::PARAM_STR);
