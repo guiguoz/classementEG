@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Félicitations ! - Escape Game Vikazimut</title>
+    
+    <style>
+        /* ========== RESET & BASE ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        :root {
+            --bg-dark: #0f0f23;
+            --bg-card: #16213e;
+            --bg-card2: #1a1a2e;
+            --border: #2a2a4a;
+            --accent: #e94560;
+            --accent2: #ff6b8a;
+            --green: #4ecca3;
+            --gold: #f0a500;
+            --cyan: #00e5ff;
+            --text: #e0e0e0;
+            --text-muted: #a0a0b8;
+            --radius: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #16213e 50%, #0f3460 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* ========== CONTAINER ========== */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+        }
+
+        /* ========== HEADER CÉLÉBRATION ========== */
+        .celebration-header {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .trophy-icon {
+            font-size: 80px;
+            animation: bounce 1s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .celebration-header h1 {
+            font-size: 32px;
+            color: var(--gold);
+            margin: 20px 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(240, 165, 0, 0.5);
+        }
+
+        .team-name-display {
+            font-size: 24px;
+            color: var(--cyan);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .final-score {
+            font-size: 48px;
+            color: var(--green);
+            font-weight: 700;
+            margin: 20px 0;
+            text-shadow: 0 0 30px rgba(78, 204, 163, 0.6);
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        /* ========== CONFETTI ANIMATION ========== */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* ========== STATS CARDS ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ========== CHALLENGES RECAP ========== */
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .challenge-item {
+            background: var(--bg-card2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-item:hover {
+            transform: translateX(5px);
+            border-color: var(--green);
+        }
+
+        .challenge-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .challenge-id {
+            background: var(--accent);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .challenge-name {
+            font-size: 16px;
+            color: var(--text);
+        }
+
+        .challenge-attempts {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .challenge-points {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        /* ========== LEADERBOARD ========== */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table thead {
+            background: var(--bg-card2);
+        }
+
+        .leaderboard-table th {
+            padding: 15px;
+            text-align: left;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .leaderboard-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .leaderboard-table tr:hover {
+            background: var(--bg-card2);
+        }
+
+        .leaderboard-table tr.current-team {
+            background: rgba(78, 204, 163, 0.1);
+            border: 2px solid var(--green);
+        }
+
+        .rank {
+            font-weight: 700;
+            color: var(--gold);
+            font-size: 18px;
+        }
+
+        .rank-1 { color: #FFD700; font-size: 24px; }
+        .rank-2 { color: #C0C0C0; font-size: 22px; }
+        .rank-3 { color: #CD7F32; font-size: 20px; }
+
+        .medal {
+            font-size: 24px;
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin: 10px 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card2);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            background: var(--bg-card);
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* ========== LOADING ========== */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========== ERROR ========== */
+        .error-message {
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 0;
+            color: var(--accent);
+            text-align: center;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 600px) {
+            .celebration-header h1 {
+                font-size: 24px;
+            }
+
+            .final-score {
+                font-size: 36px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .leaderboard-table {
+                font-size: 14px;
+            }
+
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 10px;
+            }
+        }
+
+        /* ========== HIDDEN ========== */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading">
+        <div class="spinner"></div>
+        <p>Chargement de vos résultats...</p>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="container hidden">
+        
+        <!-- Header Célébration -->
+        <div class="celebration-header">
+            <div class="trophy-icon">🏆</div>
+            <h1>Félicitations !</h1>
+            <div class="team-name-display" id="team-name-display">Équipe</div>
+            <div class="final-score" id="final-score">0 pts</div>
+            <p class="subtitle">Vous avez terminé l'Escape Game Vikazimut !</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value" id="stat-challenges">0</div>
+                <div class="stat-label">Épreuves réussies</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-value" id="stat-score">0</div>
+                <div class="stat-label">Points totaux</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-value" id="stat-perfect">0</div>
+                <div class="stat-label">Parfaits (1000pts)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value" id="stat-rank">-</div>
+                <div class="stat-label">Classement</div>
+            </div>
+        </div>
+
+        <!-- Récapitulatif des épreuves -->
+        <section class="section">
+            <h2 class="section-title">
+                <span>📋</span>
+                Détail de vos performances
+            </h2>
+            <div id="challenges-recap">
+                <!-- Généré dynamiquement -->
+            </div>
+        </section>
+
+        <!-- Classement général -->
+        <section class="section">
+            <h2 class="section-title">
+                <span>🏆</span>
+                Classement général
+            </h2>
+            <div style="overflow-x: auto;">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rang</th>
+                            <th>Équipe</th>
+                            <th>Épreuves</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-tbody">
+                        <!-- Généré dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Buttons -->
+
+    </div>
+
+    <!-- Error Screen -->
+    <div id="error-screen" class="container hidden">
+        <div class="error-message">
+            <h2>❌ Erreur</h2>
+            <p id="error-text">Impossible de charger vos résultats.</p>
+            <button class="btn btn-primary" onclick="reviewResults()">
+                Réessayer
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE_URL = 'https://hebergementvikazimut.vikazim.fr/escapegame/api';
+        const GAME_ID = 'archi';
+        const STORAGE_KEY_UUID = `vikazimut_team_uuid_${GAME_ID}`;
+
+        // Noms des épreuves (à personnaliser selon vos balises)
+        const CHALLENGE_NAMES = {
+            'T1': 'Test Épreuve 1',
+            'T2': 'Test Épreuve 2',
+            'T3': 'Test Épreuve 3',
+            'T4': 'Test Épreuve 4'
+        };
+
+        // Récupérer l'UUID de l'équipe
+        function getTeamUUID() {
+            return localStorage.getItem(STORAGE_KEY_UUID);
+        }
+
+        // Appel API générique
+        async function apiCall(endpoint, method = 'GET', data = null) {
+            const options = {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                cache: 'no-store'
+            };
+            
+            if (data && method !== 'GET') {
+                options.body = JSON.stringify(data);
+            }
+            
+            try {
+                let url = `${API_BASE_URL}${endpoint}`;
+                if (method === 'GET') {
+                    const sep = url.includes('?') ? '&' : '?';
+                    url = `${url}${sep}_ts=${Date.now()}`;
+                }
+                const response = await fetch(url, options);
+                const result = await response.json();
+                
+                if (!result.success) {
+                    throw new Error(result.error || 'Erreur API');
+                }
+                
+                return result.data;
+            } catch (error) {
+                console.error('Erreur API:', error);
+                throw error;
+            }
+        }
+
+        // Récupérer les scores de l'équipe
+        async function getTeamScores(uuid) {
+            return await apiCall(`/score.php?action=team&uuid=${uuid}`);
+        }
+
+        // Récupérer le classement
+        async function getLeaderboard() {
+            return await apiCall(`/leaderboard.php?limit=100&game_id=${GAME_ID}`);
+        }
+
+        // Marquer l'équipe comme terminée
+        async function markAsFinished(uuid) {
+            try {
+                await apiCall('/team.php?action=finish', 'POST', { uuid });
+            } catch (error) {
+                console.error('Erreur lors du marquage de fin:', error);
+            }
+        }
+
+        // Afficher les résultats
+        async function displayResults() {
+            const uuid = getTeamUUID();
+            
+            if (!uuid) {
+                showError('Aucune équipe enregistrée. Veuillez recommencer depuis l\'accueil.');
+                return;
+            }
+
+            try {
+                // Récupérer les données
+                const [scores, leaderboard] = await Promise.all([
+                    getTeamScores(uuid),
+                    getLeaderboard()
+                ]);
+
+                // Calculer les stats
+                const totalScore = scores.reduce((sum, s) => sum + s.points, 0);
+                const totalChallenges = scores.length;
+                const perfectScores = scores.filter(s => s.points === 1000).length;
+
+                // Trouver le rang
+                const currentTeam = leaderboard.find(team => team.uuid === uuid);
+                const rank = leaderboard.findIndex(team => team.uuid === uuid) + 1;
+
+                // Afficher les informations
+                document.getElementById('team-name-display').textContent = currentTeam?.name || 'Équipe';
+                document.getElementById('final-score').textContent = `${totalScore} pts`;
+                document.getElementById('stat-challenges').textContent = totalChallenges;
+                document.getElementById('stat-score').textContent = totalScore;
+                document.getElementById('stat-perfect').textContent = perfectScores;
+                document.getElementById('stat-rank').textContent = rank > 0 ? `#${rank}` : '-';
+
+                // Afficher le récapitulatif des épreuves
+                displayChallengesRecap(scores);
+
+                // Afficher le classement
+                displayLeaderboard(leaderboard, uuid);
+
+                // Marquer comme terminé
+                await markAsFinished(uuid);
+                if (typeof Vikazimut !== 'undefined') Vikazimut.postMessage("1");
+
+                // Créer les confettis
+                createConfetti();
+
+                // Afficher le contenu
+                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                showError(error.message || 'Erreur lors du chargement des résultats');
+            }
+        }
+
+        // Afficher le récapitulatif des épreuves
+        function displayChallengesRecap(scores) {
+            const container = document.getElementById('challenges-recap');
+            container.innerHTML = '';
+
+            // Trier par ordre de complétion
+            scores.sort((a, b) => new Date(a.completed_at) - new Date(b.completed_at));
+
+            scores.forEach((score, index) => {
+                const challengeName = CHALLENGE_NAMES[score.challenge_id] || `Épreuve ${score.challenge_id}`;
+                
+                const item = document.createElement('div');
+                item.className = 'challenge-item';
+                item.innerHTML = `
+                    <div class="challenge-info">
+                        <div class="challenge-id">${score.challenge_id}</div>
+                        <div>
+                            <div class="challenge-name">${challengeName}</div>
+                            <div class="challenge-attempts">
+                                ${score.attempts} tentative${score.attempts > 1 ? 's' : ''}
+                                ${score.points === 1000 ? '⭐ Parfait !' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="challenge-points">+${score.points}</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Afficher le classement
+        function displayLeaderboard(leaderboard, currentUUID) {
+            const tbody = document.getElementById('leaderboard-tbody');
+            tbody.innerHTML = '';
+
+            leaderboard.slice(0, 50).forEach((team, index) => {
+                const rank = index + 1;
+                const isCurrentTeam = team.uuid === currentUUID;
+                
+                let medal = '';
+                if (rank === 1) medal = '🥇';
+                else if (rank === 2) medal = '🥈';
+                else if (rank === 3) medal = '🥉';
+
+                const row = document.createElement('tr');
+                if (isCurrentTeam) {
+                    row.className = 'current-team';
+                }
+
+                function escapeHTML(str) {
+                    const div = document.createElement('div');
+                    div.textContent = str;
+                    return div.innerHTML;
+                }
+
+                row.innerHTML = `
+                    <td>
+                        ${medal}
+                        <span class="rank rank-${rank <= 3 ? rank : ''}">#${rank}</span>
+                    </td>
+                    <td>
+                        <strong>${escapeHTML(team.name)}</strong>
+                        ${isCurrentTeam ? ' <span style="color: var(--green);">← Vous</span>' : ''}
+                    </td>
+                    <td>${parseInt(team.challenges_completed) || 0}</td>
+                    <td><strong>${parseInt(team.total_score) || 0} pts</strong></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Créer des confettis
+        function createConfetti() {
+            const colors = ['#f0a500', '#e94560', '#4ecca3', '#00e5ff', '#ff6b8a'];
+            const container = document.querySelector('.celebration-header');
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    container.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 100);
+            }
+        }
+
+        // Afficher une erreur
+        function showError(message) {
+            document.getElementById('loading-screen').classList.add('hidden');
+            document.getElementById('error-text').textContent = message;
+            document.getElementById('error-screen').classList.remove('hidden');
+        }
+
+        // Rafraîchir/réafficher les résultats sans recharger la page
+        function reviewResults() {
+            // Réinitialise l'UI
+            document.getElementById('error-screen').classList.add('hidden');
+            document.getElementById('main-content').classList.add('hidden');
+            document.getElementById('loading-screen').classList.remove('hidden');
+            // Relance la récupération et l'affichage
+            displayResults();
+            // Remonte en haut de la page
+            try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(_) { window.scrollTo(0, 0); }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            displayResults();
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+# Credentials & secrets
+api/config.local.php
+
+# Fichiers de test
+api/test-db.php
+
+# IDE
+.qodo/
+.vscode/
+*.swp
+*~
+
+# OS
+Thumbs.db
+.DS_Store
