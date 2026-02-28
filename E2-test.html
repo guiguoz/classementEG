@@ -4,36 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Épreuve T2 - TEST</title>
-    <style>
-        :root { --bg-dark:#0f0f23; --bg-card:#16213e; --bg-card2:#1a1a2e; --border:#2a2a4a; --accent:#e94560; --accent2:#ff6b8a; --green:#4ecca3; --gold:#f0a500; --cyan:#00e5ff; --text:#e0e0e0; --text-muted:#a0a0b8; --radius:16px; }
-        * { box-sizing:border-box; margin:0; padding:0; }
-        body { font-family:'Segoe UI',sans-serif; background:linear-gradient(135deg,var(--bg-dark),var(--bg-card),#0f3460); color:var(--text); min-height:100vh; padding:20px; }
-        .container { max-width:600px; margin:0 auto; }
-        .header { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; }
-        .team-name { color:var(--cyan); font-weight:600; }
-        .score { color:var(--gold); font-weight:700; }
-        .card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:30px; margin-bottom:20px; text-align:center; }
-        h1 { color:var(--accent); font-size:28px; margin-bottom:10px; }
-        h2 { color:var(--gold); font-size:20px; margin-bottom:20px; }
-        .emoji { font-size:60px; margin-bottom:20px; }
-        .btn { width:100%; padding:18px; border-radius:12px; font-size:18px; font-weight:600; cursor:pointer; border:none; margin:8px 0; transition:all .2s; }
-        .btn:disabled { opacity:.5; cursor:not-allowed; }
-        .btn-score { background:linear-gradient(135deg,var(--green),#2ecc71); color:white; }
-        .btn-score:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 5px 20px rgba(78,204,163,.4); }
-        .btn-wrong { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; }
-        .btn-wrong:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 5px 20px rgba(233,69,96,.4); }
-        .btn-hint { background:var(--gold); color:var(--bg-dark); }
-        .btn-nav { background:var(--bg-card2); color:var(--text); border:1px solid var(--border); }
-        .btn-nav:hover { border-color:var(--accent); }
-        .feedback { padding:15px; border-radius:12px; margin:15px 0; font-weight:600; text-align:center; display:none; }
-        .feedback.show { display:block; }
-        .feedback.success { background:rgba(78,204,163,.2); border:2px solid var(--green); color:var(--green); }
-        .feedback.error { background:rgba(233,69,96,.2); border:2px solid var(--accent); color:var(--accent); }
-        .feedback.hint { background:rgba(240,165,0,.2); border:2px solid var(--gold); color:var(--gold); }
-        .nav { display:flex; gap:10px; margin-top:10px; }
-        .nav .btn-nav { flex:1; padding:14px; }
-        .status { color:var(--text-muted); font-size:14px; margin-top:10px; }
-    </style>
+    <link rel="stylesheet" href="shared/style.css">
 </head>
 <body>
     <div class="container">
@@ -46,7 +17,7 @@
         </div>
 
         <div class="card">
-            <div class="emoji">🔬</div>
+            <div class="emoji">🧪</div>
             <h1>Test Épreuve 2</h1>
             <h2>Test d'enregistrement de score</h2>
             <p style="color:var(--text-muted); margin-bottom:20px;">Cliquez sur les boutons pour tester le système de score.</p>
@@ -68,7 +39,7 @@
             <div class="status" id="attempts-display">Tentative: 1 | Points possibles: 1000</div>
         </div>
 
-        </div>
+    </div>
 
     <script>
         const API_BASE_URL = 'https://hebergementvikazimut.vikazim.fr/escapegame/api';
