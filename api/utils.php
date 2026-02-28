@@ -94,3 +94,8 @@ function sanitizeTeamName(string $name): string {
     $name = preg_replace('/\s+/', ' ', $name);
     return (string)$name;
 }
+
+// Alias pour rétrocompatibilité
+function corsHeaders() {
+    sendCorsHeaders();
+}
