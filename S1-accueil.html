@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Escape Game Vikazimut - Accueil</title>
+
+    <style>
+      :root {
+        --bg-dark: #0f0f23;
+        --bg-card: #16213e;
+        --bg-card2: #1a1a2e;
+        --border: #2a2a4a;
+        --accent: #e94560;
+        --accent2: #ff6b8a;
+        --green: #4ecca3;
+        --gold: #f0a500;
+        --cyan: #00e5ff;
+        --text: #e0e0e0;
+        --text-muted: #a0a0b8;
+        --radius: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        font-family: Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--bg-dark) 0%,
+          var(--bg-card) 50%,
+          #0f3460 100%
+        );
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding-bottom: 40px;
+      }
+
+      .hero {
+        text-align: center;
+        padding: 60px 20px 40px;
+      }
+
+      .logo {
+        font-size: 80px;
+        margin-bottom: 20px;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.08);
+        }
+      }
+
+      h1 {
+        font-size: 32px;
+        color: var(--accent);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+      }
+
+      .subtitle {
+        font-size: 18px;
+        color: var(--text-muted);
+        margin-bottom: 10px;
+      }
+
+      .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 26px;
+        margin: 18px 0;
+      }
+
+      .rules h3 {
+        color: var(--gold);
+        font-size: 20px;
+        margin-bottom: 14px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .rules ul {
+        list-style: none;
+      }
+
+      .rules li {
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+        line-height: 1.55;
+      }
+
+      .rules li:last-child {
+        border-bottom: none;
+      }
+
+      label {
+        display: block;
+        color: var(--cyan);
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+
+      input {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        background: var(--bg-card2);
+        color: var(--text);
+        transition: all 0.2s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
+      }
+
+      .error {
+        color: var(--accent);
+        font-size: 14px;
+        margin-top: 10px;
+        min-height: 18px;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 18px 20px;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s ease;
+        margin-top: 12px;
+      }
+
+      .btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: white;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(233, 69, 96, 0.35);
+      }
+
+      .btn-secondary {
+        background: var(--bg-card2);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      .btn-secondary:hover {
+        border-color: var(--accent);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.82);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .modal.show {
+        display: flex;
+      }
+
+      .modal-content {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+        max-width: 720px;
+        width: 100%;
+        max-height: 80vh;
+        overflow: auto;
+        position: relative;
+      }
+
+      .modal-close {
+        position: absolute;
+        right: 14px;
+        top: 10px;
+        font-size: 30px;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
+
+      .modal-close:hover {
+        color: var(--accent);
+      }
+
+      .loading {
+        padding: 28px 10px;
+        text-align: center;
+        color: var(--text-muted);
+      }
+
+      .spinner {
+        border: 4px solid var(--border);
+        border-top: 4px solid var(--accent);
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        margin: 0 auto 14px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      thead {
+        background: var(--bg-card2);
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+      }
+
+      th {
+        color: var(--accent);
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+      }
+
+      .rank {
+        font-weight: 800;
+        color: var(--gold);
+      }
+
+      /* Indicateur "Continuer le parcours" (affiché après création équipe) */
+      .continue-hint {
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        display: none;
+        align-items: center;
+        gap: 8px;
+        background: var(--bg-card2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 12px;
+        z-index: 2000;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .continue-hint.show {
+        display: flex;
+      }
+
+      .continue-hint .label {
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+
+      .continue-hint .arrow {
+        font-size: 22px;
+        animation: nudgeY 1s ease-in-out infinite;
+      }
+
+      @keyframes nudgeY {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(6px);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="hero">
+        <div class="logo">🧭</div>
+        <h1>Escape Game</h1>
+        <p class="subtitle">Résolvez les énigmes et accumulez des points !</p>
+      </div>
+
+      <div class="card rules">
+        <h3>Règles du jeu</h3>
+        <ul>
+          <li>4 épreuves à résoudre en parcourant le terrain.</li>
+          <li>1000 points max par épreuve réussie du premier coup.</li>
+          <li>-100 points par tentative supplémentaire.</li>
+          <li>Vous pouvez arrêter et reprendre plus tard.</li>
+          <li>Pas de rejouabilité : 1 seule validation par équipe.</li>
+          <li>Les scores sont conservés dans le classement permanent.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="form-group">
+          <label for="team-name">Nom de votre équipe</label>
+          <input
+            id="team-name"
+            type="text"
+            placeholder="Les Aventuriers"
+            maxlength="50"
+            autocomplete="off"
+          />
+          <div id="error-message" class="error"></div>
+        </div>
+
+        <button id="btn-start" class="btn btn-primary">
+          Commencer l'aventure
+        </button>
+        <button
+          id="btn-resume"
+          class="btn btn-primary"
+          style="display: none; background: linear-gradient(135deg, var(--green), #2ecc71);"
+        >
+          ▶️ Reprendre l'aventure
+        </button>
+        <button
+          id="btn-reset"
+          class="btn btn-secondary"
+          style="display: none;"
+        >
+          🔄 Changer d'équipe
+        </button>
+        <button id="btn-leaderboard" class="btn btn-secondary">
+          Voir le classement
+        </button>
+      </div>
+    </div>
+
+    <div id="continue-hint" class="continue-hint" aria-live="polite">
+      <span class="label">appuyez sur</span>
+      <span class="arrow">⬇️</span>
+    </div>
+
+    <div id="modal-leaderboard" class="modal">
+      <div class="modal-content">
+        <span class="modal-close" id="modal-close">&times;</span>
+        <h2 style="color: var(--gold); margin-bottom: 10px;">
+          Classement général
+        </h2>
+
+        <div class="loading" id="leaderboard-loading">
+          <div class="spinner"></div>
+          <div>Chargement du classement…</div>
+        </div>
+
+        <div id="leaderboard-content" style="display: none;"></div>
+      </div>
+    </div>
+
+    <script>
+      // IMPORTANT: HTML dans /escapegame/  => API dans /escapegame/api/
+      const APIBASEURL = 'https://hebergementvikazimut.vikazim.fr/escapegame/api';
+      const GAME_ID = 'archi';
+      const STORAGE_KEY_UUID = `vikazimut_team_uuid_${GAME_ID}`;
+
+      const teamNameInput = document.getElementById('team-name');
+      const btnStart = document.getElementById('btn-start');
+      const btnLeaderboard = document.getElementById('btn-leaderboard');
+      const errorMessage = document.getElementById('error-message');
+
+      const modal = document.getElementById('modal-leaderboard');
+      const modalClose = document.getElementById('modal-close');
+      const leaderboardLoading = document.getElementById('leaderboard-loading');
+      const leaderboardContent = document.getElementById('leaderboard-content');
+
+      function getTeamUUID() {
+        return localStorage.getItem(STORAGE_KEY_UUID);
+      }
+
+      function setTeamUUID(uuid) {
+        localStorage.setItem(STORAGE_KEY_UUID, uuid);
+      }
+
+      function clearTeamUUID() {
+        localStorage.removeItem(STORAGE_KEY_UUID);
+      }
+
+      function showError(message) {
+        errorMessage.textContent = message || '';
+        if (message) setTimeout(() => { errorMessage.textContent = ''; }, 6000);
+      }
+
+      async function apiCall(endpoint, method = 'GET', data = null) {
+        const options = {
+          method,
+          headers: { 'Content-Type': 'application/json' }
+        };
+        if (data && method !== 'GET') options.body = JSON.stringify(data);
+
+        const response = await fetch(`${APIBASEURL}/${endpoint}`, options);
+
+        // Si le serveur renvoie une page HTML (erreur PHP), on donne un message clair
+        const contentType = response.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+          const text = await response.text();
+          throw new Error(
+            `Réponse non-JSON (${response.status}). Vérifie l'API. Début: ${text.slice(0, 80)}...`
+          );
+        }
+
+        const result = await response.json();
+        if (!result.success) throw new Error(result.error || 'Erreur API');
+        return result.data;
+      }
+
+      async function createTeam() {
+        showError('');
+        const teamName = teamNameInput.value.trim();
+
+        if (teamName.length < 3) return showError('Le nom doit contenir au moins 3 caractères.');
+        if (teamName.length > 50) return showError('Le nom ne doit pas dépasser 50 caractères.');
+
+        btnStart.disabled = true;
+        btnStart.textContent = 'Création en cours...';
+
+        try {
+          const data = await apiCall('team.php?action=register', 'POST', { name: teamName, game_id: GAME_ID });
+          setTeamUUID(data.uuid);
+          teamNameInput.disabled = true;
+          btnStart.textContent = `✅ Équipe "${data.team_name}" créée !`;
+          btnStart.style.background = 'linear-gradient(135deg, var(--green), #2ecc71)';
+
+          // Signaler à l'app Vikazimut que l'étape est validée
+          if (typeof Vikazimut !== 'undefined') {
+            Vikazimut.postMessage("1");
+          }
+          // Afficher l'indicateur pour appuyer sur "Continuer le parcours" dans l'app
+          const hintEl = document.getElementById('continue-hint');
+          if (hintEl) hintEl.classList.add('show');
+        } catch (err) {
+          console.error('Erreur API:', err);
+          showError(err.message);
+          btnStart.disabled = false;
+          btnStart.textContent = "Commencer l'aventure";
+        }
+      }
+
+      async function checkExistingTeam() {
+        const uuid = getTeamUUID();
+        console.log('checkExistingTeam - UUID trouvé:', uuid);
+        if (!uuid) return;
+
+        try {
+          const team = await apiCall(`team.php?action=check&uuid=${encodeURIComponent(uuid)}`);
+          console.log('Équipe trouvée:', team);
+
+          // Si l'équipe a terminé le jeu, on repart de zéro
+          if (team.is_finished) {
+            clearTeamUUID();
+            return;
+          }
+
+          teamNameInput.value = team.name;
+          teamNameInput.disabled = true;
+          btnStart.style.display = 'none';
+          document.getElementById('btn-resume').style.display = 'block';
+          document.getElementById('btn-reset').style.display = 'block';
+        } catch (err) {
+          console.error('Erreur checkExistingTeam:', err);
+          // Si l'API échoue mais qu'on a un UUID en local, on affiche quand même le bouton
+          // pour permettre de continuer hors ligne
+          console.log('API échouée, affichage du bouton quand même (mode hors ligne)');
+          teamNameInput.disabled = true;
+          btnStart.style.display = 'none';
+          document.getElementById('btn-resume').style.display = 'block';
+          document.getElementById('btn-reset').style.display = 'block';
+        }
+      }
+
+      async function showLeaderboard() {
+        modal.classList.add('show');
+        leaderboardLoading.style.display = 'block';
+        leaderboardContent.style.display = 'none';
+        leaderboardContent.innerHTML = '';
+
+        try {
+          const leaderboard = await apiCall('leaderboard.php?limit=50&game_id=' + GAME_ID, 'GET');
+          let html =
+            '<table><thead><tr><th>Rang</th><th>Équipe</th><th>Épreuves</th><th>Score</th></tr></thead><tbody>';
+
+          function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+          }
+
+          leaderboard.forEach((team, index) => {
+            html += `<tr>
+            <td class="rank">${index + 1}</td>
+            <td><strong>${escapeHTML(team.name)}</strong></td>
+            <td>${parseInt(team.challenges_completed) || 0}</td>
+            <td><strong>${parseInt(team.total_score)} pts</strong></td>
+          </tr>`;
+          });
+
+          html += '</tbody></table>';
+          leaderboardContent.innerHTML = html;
+
+          leaderboardLoading.style.display = 'none';
+          leaderboardContent.style.display = 'block';
+        } catch (err) {
+          leaderboardLoading.style.display = 'none';
+          leaderboardContent.style.display = 'block';
+          leaderboardContent.innerHTML = `<div style="color:var(--accent); text-align:center; padding:10px;">${err.message}</div>`;
+        }
+      }
+
+      btnStart.addEventListener('click', createTeam);
+
+      document.getElementById('btn-resume').addEventListener('click', function() {
+        const uuid = getTeamUUID();
+        console.log('Reprendre adventure - UUID:', uuid);
+        if (!uuid) {
+          showError('Session expirée. Veuillez créer une nouvelle équipe.');
+          return;
+        }
+        window.location.href = 'E1-test.html';
+      });
+
+      // COMPORTEMENT MODIFIÉ DU BOUTON "CHANGER D'ÉQUIPE"
+      document.getElementById('btn-reset').addEventListener('click', async () => {
+        const confirmReset = confirm(
+          "⚠️ Attention ! Si vous changez d'équipe, l'aventure de l'équipe actuelle sera définitivement terminée.\n\nVotre score actuel sera sauvegardé dans le classement général, mais vous ne pourrez plus reprendre cette partie.\n\nVoulez-vous vraiment clôturer cette équipe et en recommencer une nouvelle ?"
+        );
+
+        if (confirmReset) {
+          const uuid = getTeamUUID();
+
+          // 1. Notifie le serveur que l'équipe a terminé
+          if (uuid) {
+            try {
+              await apiCall('team.php?action=finish', 'POST', { uuid });
+            } catch (err) {
+              console.error("Erreur lors de la clôture de l'équipe :", err);
+              // L'erreur est ignorée pour permettre à l'utilisateur de continuer même hors connexion
+            }
+          }
+
+          // 2. Vide le localStorage et réinitialise l'interface
+          clearTeamUUID();
+          teamNameInput.value = '';
+          teamNameInput.disabled = false;
+          btnStart.style.display = '';
+          btnStart.disabled = false;
+          btnStart.textContent = "Commencer l'aventure";
+          btnStart.style.background = '';
+          document.getElementById('btn-resume').style.display = 'none';
+          document.getElementById('btn-reset').style.display = 'none';
+          document.getElementById('continue-hint').classList.remove('show');
+          showError('');
+        }
+      });
+
+      btnLeaderboard.addEventListener('click', showLeaderboard);
+      modalClose.addEventListener('click', () => modal.classList.remove('show'));
+      modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+
+      document.addEventListener('DOMContentLoaded', checkExistingTeam);
+    </script>
+  </body>
+</html>
