@@ -568,14 +568,27 @@
       btnStart.addEventListener('click', createTeam);
 
       document.getElementById('btn-resume').addEventListener('click', function() {
-        const uuid = getTeamUUID();
-        console.log('Reprendre adventure - UUID:', uuid);
-        if (!uuid) {
-          showError('Session expirée. Veuillez créer une nouvelle équipe.');
-          return;
-        }
-        window.location.href = 'E1-test.html';
-      });
+  const uuid = getTeamUUID();
+  console.log('Reprendre adventure - UUID:', uuid);
+  if (!uuid) {
+    showError('Session expirée. Veuillez créer une nouvelle équipe.');
+    return;
+  }
+  
+  // Griser le bouton
+  this.disabled = true;
+  this.style.opacity = '0.5';
+  
+  // Afficher l'indicateur "appuyez sur ⬇️"
+  const hintEl = document.getElementById('continue-hint');
+  if (hintEl) hintEl.classList.add('show');
+  
+  // Signaler à l'app Vikazimut
+  if (typeof Vikazimut !== 'undefined') {
+    Vikazimut.postMessage("1");
+  }
+});
+
 
       // COMPORTEMENT MODIFIÉ DU BOUTON "CHANGER D'ÉQUIPE"
       document.getElementById('btn-reset').addEventListener('click', async () => {
